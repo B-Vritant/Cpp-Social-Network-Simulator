@@ -201,9 +201,102 @@ public:
     Node *get_root() { return root; }
 };
 
-// Todo: Graph class coming in next commit
+class Graph
+{
+public:
+    unordered_map<string, AVLtree> mp;
+    unordered_map<string, AVLtree> post;
+
+    vector<string> Give_Friends(string username)
+    {
+        if (mp.find(username) == mp.end())
+        {
+            return {};
+        }
+        AVLtree &used = mp[username];
+        vector<string> v;
+        used.print_inorder(v, used.get_root());
+        return v;
+    }
+
+    void ADD_USER(string username)
+    {
+        if (mp.find(username) != mp.end())
+        {
+            cout << "User " << username << " already exists." << endl;
+            return;
+        }
+        mp[username] = AVLtree();
+        post[username] = AVLtree();
+        cout << "User " << username << " successfully created." << endl;
+    }
+
+    void ADD_FRIEND(string username1, string username2)
+    {
+        if (mp.find(username1) == mp.end())
+        {
+            cout << "No user with " << username1 << " exists . Enter a valid user to make friends with." << endl;
+            return;
+        }
+        if (mp.find(username2) == mp.end())
+        {
+            cout << "No user with " << username2 << " exists . Enter a valid user to make friends with." << endl;
+            return;
+        }
+        if (username1 == username2)
+        {
+            cout << "A user cannot be friends with themselves." << endl;
+            return;
+        }
+        vector<string> f1 = Give_Friends(username1);
+        bool alreadyFriend = false;
+        for (auto fr : f1)
+        {
+            if (fr == username2)
+            {
+                alreadyFriend = true;
+                break;
+            }
+        }
+        if (alreadyFriend)
+        {
+            cout << username1 << " is already a friend of " << username2 << endl;
+            return;
+        }
+
+        AVLtree &used1 = mp[username1];
+        AVLtree &used2 = mp[username2];
+        used1.root = used1.add_Friend_Helper(used1.root, lowercase(username2));
+        used2.root = used2.add_Friend_Helper(used2.root, lowercase(username1));
+        cout << "Users " << username1 << " and " << username2 << " are now friends." << endl;
+    }
+
+    void LIST_FRIENDS(string username)
+    {
+        if (mp.find(username) == mp.end())
+        {
+            cout << "User not found. Please give a valid user." << endl;
+            return;
+        }
+        AVLtree &used = mp[username];
+        vector<string> v;
+        used.print_inorder(v, used.get_root());
+        if (v.empty())
+        {
+            cout << "No friends yet." << endl;
+            return;
+        }
+        for (auto name : v)
+        {
+            cout << name << endl;
+        }
+    }
+
+    // Todo: More features in next commit
+};
+
 int main()
 {
-    cout << "AVL Tree implementation ready. More features coming soon..." << endl;
+    cout << "More features coming soon..." << endl;
     return 0;
 }
