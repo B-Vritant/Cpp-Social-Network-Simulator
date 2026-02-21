@@ -275,7 +275,7 @@ public:
         mp[username] = t;
         AVLtree v;
         post[username] = v;
-        cout << "User " << username << " successfully created." << endl;
+        cout << "User " << username << " succesfully created." << endl;
     }
 
     void ADD_FRIEND(string username1, string username2)
@@ -452,7 +452,7 @@ public:
         }
         AVLtree &now = post[username];
         now.add(username, content);
-        cout << "Post successfully added for '" << username << "' ." << endl;
+        cout << "Post succesfully added for '" << username << "' ." << endl;
     }
 
     void OUTPUT_POSTS(string username, int N)
@@ -486,6 +486,219 @@ public:
 
 int main()
 {
-    cout << "Parser coming soon..." << endl;
+
+    Graph gh;
+    while (true)
+    {
+        string input, operation, rest, username, leftout, extra;
+        cout << endl;
+        cout << "Enter the command you want to perform or EXIT if you want to end the programme. " << endl;
+        cout << endl;
+
+        getline(cin, input);
+        if (input.empty())
+            continue;
+        stringstream ss(input);
+
+        ss >> operation;
+        if (!(operation == "ADD_USER" || operation == "ADD_FRIEND" || operation == "LIST_FRIENDS" || operation == "SUGGEST_FRIENDS" || operation == "DEGREES_OF_SEPARATION" || operation == "ADD_POST" || operation == "OUTPUT_POSTS" || operation == "EXIT"))
+        {
+            cout << "Incorrect operation given, please choose : ADD_USER , ADD_FRIEND , LIST_FRIENDS , SUGGEST_FRIENDS , DEGREES_OF_SEPARATION , ADD_POST , OUTPUT_POSTS , EXIT " << endl;
+            continue;
+        }
+
+        if (operation == "EXIT")
+        {
+            if ((ss >> rest))
+            {
+                cout << "After EXIT, something extra have been written which is a wrong format. If you want to end, write only : EXIT " << endl;
+                continue;
+            }
+            break;
+        }
+
+        else if (operation == "ADD_USER")
+        {
+            if (!(ss >> rest))
+            {
+                cout << "Incorrect format, please write it in ADD_USER <username> format. ";
+                continue;
+            }
+            if (ss >> leftout)
+            {
+                cout << "Incorrect format, after username , something extra has been written. Please write it in ADD_USER <username> format. ";
+                continue;
+            }
+            username = lowercase(rest);
+
+            gh.ADD_USER(username);
+            continue;
+        }
+
+        else if (operation == "ADD_FRIEND")
+        {
+            if (!(ss >> rest))
+            {
+                cout << "Incorrect format, please write it in ADD_FRIEND <username1> <username2> format. ";
+                continue;
+            }
+            if (!(ss >> leftout))
+            {
+                cout << "Incorrect format, please write it in ADD_FRIEND <username1> <username2> format. ";
+                continue;
+            }
+            if (ss >> extra)
+            {
+                cout << "Something extra have been written after username2, username cannot have spaces , please write it in ADD_FRIEND <username1> <username2> format. ";
+                continue;
+            }
+            string username1 = lowercase(rest);
+            string username2 = lowercase(leftout);
+
+            gh.ADD_FRIEND(username1, username2);
+            continue;
+        }
+
+        else if (operation == "LIST_FRIENDS")
+        {
+            if (!(ss >> rest))
+            {
+                cout << "Incorrect format, please write it in LIST_FRIENDS <username> format. ";
+                continue;
+            }
+            if (ss >> leftout)
+            {
+                cout << "Incorrect format, after username , something extra has been written. Please write it in LIST_FRIENDS <username> format. ";
+                continue;
+            }
+            username = lowercase(rest);
+
+            gh.LIST_FRIENDS(username);
+            continue;
+        }
+
+        else if (operation == "SUGGEST_FRIENDS")
+        {
+            if (!(ss >> rest))
+            {
+                cout << "Incorrect format, please write it in SUGGEST_FRIENDS <username> <N> format. ";
+                continue;
+            }
+            if (!(ss >> leftout))
+            {
+                cout << "Incorrect format, please write it in SUGGEST_FRIENDS <username> <N> format. ";
+                continue;
+            }
+
+            if (ss >> extra)
+            {
+                cout << "Something extra have been written after N, please write it in SUGGEST_FRIENDS <username> <N> format. ";
+                continue;
+            }
+
+            try
+            {
+                size_t pos;
+                int num = stoi(leftout, &pos);
+                if (pos != leftout.size())
+                {
+                    cout << "Error: invalid characters after number" << endl;
+                    continue;
+                }
+                string username = lowercase(rest);
+                gh.SUGGEST_FRIENDS(username, num);
+            }
+            catch (...)
+            {
+                cout << "Error: Please provide a valid number N in SUGGEST_FRIENDS <username> <N> format." << endl;
+                continue;
+            }
+        }
+
+        else if (operation == "DEGREES_OF_SEPARATION")
+        {
+            if (!(ss >> rest))
+            {
+                cout << "Incorrect format, please write it in DEGREES_OF_SEPARATION <username1> <username2> format. ";
+                continue;
+            }
+            if (!(ss >> leftout))
+            {
+                cout << "Incorrect format, please write it in DEGREES_OF_SEPARATION <username1> <username2> format. ";
+                continue;
+            }
+            if (ss >> extra)
+            {
+                cout << "Something extra have been written after username2, username cannot have spaces , please write it in DEGREES_OF_SEPARATION <username1> <username2> format. ";
+                continue;
+            }
+            string username1 = lowercase(rest);
+            string username2 = lowercase(leftout);
+            gh.DEGREES_OF_SEPARATION(username1, username2);
+            continue;
+        }
+
+        else if (operation == "ADD_POST")
+        {
+            if (!(ss >> rest))
+            {
+                cout << "Incorrect format, please write it in ADD_POST <username> <post content> format. ";
+                continue;
+            }
+
+            string username1 = lowercase(rest);
+
+            string postContent;
+            string g;
+            while (ss >> g)
+                postContent += g + " ";
+
+            if (postContent.empty())
+            {
+                cout << "Error: missing post content." << endl;
+                continue;
+            }
+            postContent = lowercase(postContent);
+
+            gh.ADD_POST(username1, postContent);
+            continue;
+        }
+
+        else if (operation == "OUTPUT_POSTS")
+        {
+            if (!(ss >> rest))
+            {
+                cout << "Incorrect format, please write it in OUTPUT_POSTS <username> <N> format. ";
+                continue;
+            }
+            if (!(ss >> leftout))
+            {
+                cout << "Incorrect format, please write it in OUTPUT_POSTS <username> <N> format. ";
+                continue;
+            }
+            if (ss >> extra)
+            {
+                cout << "Something extra have been written after N, please write it in OUTPUT_POSTS <username> <N> format. ";
+                continue;
+            }
+            try
+            {
+                size_t pos;
+                int num = stoi(leftout, &pos);
+                if (pos != leftout.size())
+                {
+                    cout << "Error: invalid characters after number" << endl;
+                    continue;
+                }
+                string username = lowercase(rest);
+                gh.OUTPUT_POSTS(username, num);
+            }
+            catch (...)
+            {
+                cout << "Error: Please provide a valid number N in OUTPUT_POSTS <username> <N> format." << endl;
+                continue;
+            }
+        }
+    }
     return 0;
 }
