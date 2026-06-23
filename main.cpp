@@ -275,7 +275,7 @@ public:
         mp[username] = t;
         AVLtree v;
         post[username] = v;
-        cout << "User " << username << " succesfully created." << endl;
+        cout << "User " << username << " successfully created." << endl;
     }
 
     void ADD_FRIEND(string username1, string username2)
@@ -452,7 +452,7 @@ public:
         }
         AVLtree &now = post[username];
         now.add(username, content);
-        cout << "Post succesfully added for '" << username << "' ." << endl;
+        cout << "Post successfully added for '" << username << "' ." << endl;
     }
 
     void OUTPUT_POSTS(string username, int N)
