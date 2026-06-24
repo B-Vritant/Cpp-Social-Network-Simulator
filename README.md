@@ -42,16 +42,12 @@ OUTPUT_POSTS alice 5
 EXIT
 ```
 
----
-
 ## Data Structures & Algorithms Used
 
 - **AVL Trees** – Self-balancing Binary Search Trees for efficient friend lists and timestamp-ordered posts.
 - **Graph Representation** – `unordered_map<string, AVLtree>` for storing user connections.
 - **Breadth-First Search (BFS)** – Used to calculate degrees of separation between users.
 - **Mutual Friends Algorithm** – Used for generating friend recommendations.
-
----
 
 ## Tech Stack
 
@@ -68,20 +64,6 @@ g++ -std=c++17 main.cpp -o simulator
 ./simulator
 ```
 
----
-
-## Project Structure
-
-```text
-cpp-social-network-simulator/
-├── README.md
-├── main.cpp
-├── Makefile          # Optional (recommended)
-└── .gitignore
-```
-
----
-
 ## Learning Outcomes
 
 - Deep understanding of AVL Tree operations (rotations, balancing, insertion)
@@ -89,15 +71,11 @@ cpp-social-network-simulator/
 - Command-line interface design and input parsing in C++
 - Memory management with custom data structures
 
----
-
 ## Author
 
 **B Vritant**
 
 Made with ❤️ for learning Data Structures & Algorithms.
-
----
 
 ## Roadmap
 
